@@ -9,6 +9,6 @@ A simple and visually pleasing infinite timer that resets on demand. It displays
 - Reset button to start the timer from zero.
 
 ## 📸 Preview
-![Timer Preview](https://www.infinite-timer.netlify.app)
+![Timer Preview](https://infinite-timer.netlify.app)
 
 ## 😁 Have Fun
