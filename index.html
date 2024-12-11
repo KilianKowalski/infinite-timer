@@ -1,99 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinite Timer</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            color: #333;
-            text-align: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timer-Projekt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      margin: 0;
+    }
 
-        .timer-container {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+    .timer-container {
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
 
-        .timer {
-            font-size: 3rem;
-            font-weight: bold;
-            margin: 1rem 0;
-        }
+    h1 {
+      color: #333;
+    }
 
-        .message {
-            font-size: 1.5rem;
-            margin-top: 1rem;
-        }
+    .timer {
+      font-size: 24px;
+      color: #555;
+      margin: 20px 0;
+    }
 
-        button {
-            background: #ff6f61;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        button:hover {
-            background: #ff3d2e;
-        }
-    </style>
+    .info {
+      font-size: 16px;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
-    <div class="timer-container">
-        <h1>Infinite Timer</h1>
-        <div class="timer" id="timer">00:00:00</div>
-        <div class="message" id="message">Let's have some fun!</div>
-        <button id="resetButton">Reset Timer</button>
+  <div class="timer-container">
+    <h1>Timer läuft!</h1>
+    <div class="timer" id="timer">Lädt...</div>
+    <div class="info">
+      <p>Der Timer läuft seit dem 11.12.2024 um 21:30 Uhr.</p>
+      <p>Der Timer wird am 09.08.2028 enden.</p>
     </div>
+  </div>
 
-    <script>
-        let timerInterval;
-        let seconds = 0;
-        const messages = [
-            "Keep going!",
-            "You're unstoppable!",
-            "Time flies when you're having fun!",
-            "This timer loves you!",
-            "What will you do with eternity?"
-        ];
+  <script>
+    // Start- und Endzeit definieren
+    const startDate = new Date("2024-12-11T21:30:00Z");
+    const endDate = new Date("2028-08-09T00:00:00Z");
 
-        function updateTimer() {
-            seconds++;
-            const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
-            const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-            const secs = String(seconds % 60).padStart(2, '0');
-            document.getElementById('timer').textContent = `${hrs}:${mins}:${secs}`;
+    // Funktion zur Berechnung des verbleibenden Zeitabstands
+    function updateTimer() {
+      const now = new Date();
+      const timeDiff = endDate - now;
 
-            if (seconds % 10 === 0) {
-                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                document.getElementById('message').textContent = randomMessage;
-            }
-        }
+      if (timeDiff <= 0) {
+        document.getElementById("timer").textContent = "Der Timer hat sein Ende erreicht!";
+        return;
+      }
 
-        function startTimer() {
-            timerInterval = setInterval(updateTimer, 1000);
-        }
+      // Berechnungen für Tage, Stunden, Minuten und Sekunden
+      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-        document.getElementById('resetButton').addEventListener('click', () => {
-            seconds = 0;
-            document.getElementById('timer').textContent = "00:00:00";
-            document.getElementById('message').textContent = "Let's have some fun!";
-        });
+      // Timer aktualisieren
+      document.getElementById("timer").textContent = `${days} Tage, ${hours} Stunden, ${minutes} Minuten, ${seconds} Sekunden`;
+    }
 
-        startTimer();
-    </script>
+    // Alle 1000 ms (1 Sekunde) den Timer aktualisieren
+    setInterval(updateTimer, 1000);
+
+    // Initiale Anzeige
+    updateTimer();
+  </script>
 </body>
 </html>
