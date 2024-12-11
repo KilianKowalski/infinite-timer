@@ -3,67 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timer-Projekt</title>
+  <title>Der Ewig Laufende Timer</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f1f1;
+      font-family: 'Arial', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f0f0f0;
-      margin: 0;
-    }
-
-    .timer-container {
-      text-align: center;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 300px;
-    }
-
-    h1 {
       color: #333;
     }
 
+    .container {
+      background: linear-gradient(135deg, #6a5acd, #00bcd4);
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #fff;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
     .timer {
-      font-size: 24px;
-      color: #555;
+      font-size: 48px;
+      font-weight: bold;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+      display: inline-block;
       margin: 20px 0;
     }
 
+    .description {
+      font-size: 18px;
+      color: #fff;
+      opacity: 0.8;
+    }
+
     .info {
+      margin-top: 20px;
       font-size: 16px;
-      color: #666;
+      color: #fff;
+      opacity: 0.6;
+    }
+
+    .footer {
+      font-size: 14px;
+      color: #fff;
+      opacity: 0.7;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
-  <div class="timer-container">
-    <h1>Timer läuft!</h1>
-    <div class="timer" id="timer">Lädt...</div>
-    <div class="info">
-      <p>Der Timer läuft seit dem 11.12.2024 um 21:30 Uhr.</p>
-      <p>Der Timer wird am 09.08.2028 enden.</p>
+  <div class="container">
+    <h1>Der Timer läuft</h1>
+    <div id="timer" class="timer">00:00:00:00</div>
+    <div class="description">
+      <p>Der Timer läuft seit dem 11.12.2024, 21:30 Uhr.</p>
+      <p>Genieße den Countdown – er wird immer weiter zählen!</p>
+    </div>
+    <div class="footer">
+      <p>Powered by Deine Website</p>
     </div>
   </div>
 
   <script>
-    // Start- und Endzeit definieren
+    // Startzeitpunkt definieren
     const startDate = new Date("2024-12-11T21:30:00Z");
-    const endDate = new Date("2028-08-09T00:00:00Z");
 
-    // Funktion zur Berechnung des verbleibenden Zeitabstands
+    // Funktion zur Aktualisierung des Timers
     function updateTimer() {
       const now = new Date();
-      const timeDiff = endDate - now;
-
-      if (timeDiff <= 0) {
-        document.getElementById("timer").textContent = "Der Timer hat sein Ende erreicht!";
-        return;
-      }
+      const timeDiff = now - startDate;  // Zeitdifferenz von Startdatum bis jetzt
 
       // Berechnungen für Tage, Stunden, Minuten und Sekunden
       const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
@@ -71,11 +96,17 @@
       const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-      // Timer aktualisieren
-      document.getElementById("timer").textContent = `${days} Tage, ${hours} Stunden, ${minutes} Minuten, ${seconds} Sekunden`;
+      // Timer aktualisieren (mit führenden Nullen für das Format)
+      document.getElementById("timer").textContent = 
+        `${padZero(days)}:${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
     }
 
-    // Alle 1000 ms (1 Sekunde) den Timer aktualisieren
+    // Funktion, um führende Nullen zu setzen
+    function padZero(num) {
+      return num < 10 ? "0" + num : num;
+    }
+
+    // Den Timer jede Sekunde aktualisieren
     setInterval(updateTimer, 1000);
 
     // Initiale Anzeige
